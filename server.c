@@ -6,7 +6,7 @@
 /*   By: acami <acami@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 00:17:58 by acami             #+#    #+#             */
-/*   Updated: 2021/06/27 21:35:54 by acami            ###   ########.fr       */
+/*   Updated: 2021/06/27 22:18:09 by acami            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,16 @@ static void	recieveBit(int signal, siginfo_t *info, void *context)
 		{
 			g_message.trnasaction_pending = false;
 			printMessage();
+			kill(info->si_pid, SIGUSR2);
 			write(1, "\n", 1);
-			usleep(200);
-			kill(info->si_pid, SIGUSR1);
+			return ;
 		}
 		g_message.bit_pos = 0;
 		++(g_message.str_pos);
 		if (g_message.str_pos == BUFF_SIZE)
 			printMessage();
 	}
+	kill(info->si_pid, SIGUSR1);
 }
 
 static void	decodeBinary(void)
@@ -86,7 +87,9 @@ static void	decodeBinary(void)
 int	main(void)
 {
 	char	*pid;
+	char	message[BUFF_SIZE];
 
+	g_message.str = message;
 	pid = ft_itoa(getpid());
 	write(1, "I am alive! PID: ", 18);
 	write(1, pid, ft_strlen(pid));

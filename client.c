@@ -6,60 +6,60 @@
 /*   By: acami <acami@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 00:33:19 by acami             #+#    #+#             */
-/*   Updated: 2021/06/27 21:35:50 by acami            ###   ########.fr       */
+/*   Updated: 2021/06/27 22:08:45 by acami            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-static void	printAcknowledgement(int signal)
+static t_message	g_message;
+
+static void	sendBit(int signal, siginfo_t *info, void *context)
 {
-	if (signal == SIGUSR1)
-		write(1, "Acknowledgement form server recieved\n", 38);
+	int32_t	bit;
+
+	(void)context;
+	if (signal == SIGUSR2)
+	{
+		write(1, "Everything was successfully sent to the server\n", 48);
+		exit (EXIT_SUCCESS);
+	}
+	bit = ((g_message.str[g_message.str_pos]) >> (7 - g_message.bit_pos)) & 1L;
+	if (bit == 0)
+		kill(info->si_pid, SIGUSR1);
 	else
-		write(1, "Error occured!\n", 16);
+		kill(info->si_pid, SIGUSR2);
+	++(g_message.bit_pos);
+	if (g_message.bit_pos == 8)
+	{
+		g_message.bit_pos = 0;
+		++(g_message.str_pos);
+	}
 }
 
-static void	sendMessge(int serv_pid, const char *message)
+static void	sendMessage(int serv_pid)
 {
-	int32_t	count;
-	char	curr_bit;
+	struct sigaction	handler;
+	siginfo_t			info;
 
-	while (*message != '\0')
+	handler.sa_sigaction = sendBit;
+	handler.sa_flags = SA_SIGINFO;
+	sigaction(SIGUSR1, &handler, NULL);
+	sigaction(SIGUSR2, &handler, NULL);
+	info.si_pid = serv_pid;
+	sendBit(SIGUSR1, &info, NULL);
+	while (1)
 	{
-		count = 0;
-		while (count < 8)
-		{
-			curr_bit = ((*message) >> (7 - count)) & 1L;
-			if (curr_bit == 1)
-				kill(serv_pid, SIGUSR2);
-			else
-				kill(serv_pid, SIGUSR1);
-			usleep(200);
-			++count;
-		}
-		++message;
-	}
-	count = 0;
-	while (count < 8)
-	{
-		kill(serv_pid, SIGUSR1);
-		usleep(200);
-		++count;
+		pause();
 	}
 }
 
 int	main(int argc, char **argv)
 {
-	struct sigaction	handler;
-
 	if (argc == 3)
 	{
-		handler.sa_handler = printAcknowledgement;
-		sigaction(SIGUSR1, &handler, NULL);
-		sigaction(SIGUSR2, &handler, NULL);
-		sendMessge(ft_atoi(argv[1]), argv[2]);
-		pause();
+		g_message.str = argv[2];
+		sendMessage(ft_atoi(argv[1]));
 	}
 	else
 		write(1, "Usage: ./client [SERVER_PID] [MESSAGE]\n", 40);

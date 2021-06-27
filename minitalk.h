@@ -6,7 +6,7 @@
 /*   By: acami <acami@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 12:59:23 by acami             #+#    #+#             */
-/*   Updated: 2021/06/27 21:36:31 by acami            ###   ########.fr       */
+/*   Updated: 2021/06/27 21:51:30 by acami            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ struct	s_message
 {
 	int32_t	str_pos;
 	int32_t	bit_pos;
-	char	str[BUFF_SIZE];
+	char	*str;
 	bool	trnasaction_pending;
 };
 
