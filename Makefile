@@ -6,7 +6,7 @@
 #    By: acami <acami@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/27 20:41:21 by acami             #+#    #+#              #
-#    Updated: 2021/06/27 22:55:29 by acami            ###   ########.fr        #
+#    Updated: 2021/06/27 23:03:07 by acami            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,18 +14,22 @@ NAME		= minitalk
 SERVER_NAME	= server
 CLIENT_NAME	= client
 
-SERVER_SRCS	= 	ft_itoa.c \
+
+SRC_DIR		=	./srcs/
+SERVER_SRC	= 	ft_itoa.c \
 server.c
-CLIENT_SRCS	=	ft_atoi.c \
+CLIENT_SRC	=	ft_atoi.c \
 client.c
+SERVER_SRCS	=	$(addprefix $(SRC_DIR), $(SERVER_SRC))
+CLIENT_SRCS	=	$(addprefix $(SRC_DIR), $(CLIENT_SRC))
 
 OBJ_DIR		=	./objs/
-SERVER_OBJS	=	$(addprefix $(OBJ_DIR), $(SERVER_SRCS:.c=.o))
-CLIENT_OBJS	=	$(addprefix $(OBJ_DIR), $(CLIENT_SRCS:.c=.o))
+SERVER_OBJS	=	$(addprefix $(OBJ_DIR), $(SERVER_SRC:.c=.o))
+CLIENT_OBJS	=	$(addprefix $(OBJ_DIR), $(CLIENT_SRC:.c=.o))
 
 CC				=	gcc
 CFLAGS			=	-Wall -Wextra -Werror
-INCLUDES		=	-I ./
+INCLUDES		=	-I ./headers/
 
 # COLORS
 RED 	= 	\033[0;31m
@@ -34,40 +38,40 @@ BLUE	=	\033[0;34m
 CYAN	=	\033[0;36m
 RESET 	= 	\033[0m
 
-$(NAME) :	 	$(SERVER_NAME)  $(CLIENT_NAME)
+$(NAME) :	 		$(SERVER_NAME)  $(CLIENT_NAME)
 
-$(SERVER_NAME) :		$(OBJ_DIR) $(SERVER_OBJS)
-				@echo "$(NAME): $(GREEN) Creating $(SERVER_NAME) $(RESET)"
-				$(CC) $(CFLAGS) $(INCLUDES) $(SERVER_OBJS) -o $(SERVER_NAME)
+$(SERVER_NAME) :	$(OBJ_DIR) $(SERVER_OBJS)
+					@echo "$(NAME): $(GREEN) Creating $(SERVER_NAME) $(RESET)"
+					$(CC) $(CFLAGS) $(INCLUDES) $(SERVER_OBJS) -o $(SERVER_NAME)
 
-$(CLIENT_NAME)  :		$(OBJ_DIR) $(CLIENT_OBJS)
-				@echo "$(NAME): $(GREEN) Creating $(CLIENT_NAME) $(RESET)"
-				$(CC) $(CFLAGS) $(INCLUDES) $(CLIENT_OBJS) -o $(CLIENT_NAME)
+$(CLIENT_NAME) :	$(OBJ_DIR) $(CLIENT_OBJS)
+					@echo "$(NAME): $(GREEN) Creating $(CLIENT_NAME) $(RESET)"
+					$(CC) $(CFLAGS) $(INCLUDES) $(CLIENT_OBJS) -o $(CLIENT_NAME)
 
-all : 			$(NAME)
+all : 				$(NAME)
 
-bonus:			all
+bonus:				all
 
 include $(wildcard $(OBJ_DIR)*.d)
 
 $(OBJ_DIR) :
-				@mkdir -p $(OBJ_DIR)
-				@echo "$(NAME): $(GREEN)$(OBJ_DIR) was created$(RESET)"
+					@mkdir -p $(OBJ_DIR)
+					@echo "$(NAME): $(GREEN)$(OBJ_DIR) was created$(RESET)"
 
-$(OBJ_DIR)%.o :	%.c		
-				$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@ -MMD
+$(OBJ_DIR)%.o :		$(SRC_DIR)%.c
+					$(CC) $(CFLAGS) -c $(INCLUDES) $< -o $@ -MMD
 
 clean :
-				@echo "$(NAME): $(BLUE) Deleting $(OBJ_DIR) $(RESET)"
-				@rm -rf $(OBJ_DIR)
+					@echo "$(NAME): $(BLUE) Deleting $(OBJ_DIR) $(RESET)"
+					@rm -rf $(OBJ_DIR)
 				
 fclean :
-				@echo "$(NAME): $(CYAN) Deleting $(OBJ_DIR) $(RESET)"
-				@rm -rf $(OBJ_DIR)
-				@echo "$(NAME): $(CYAN) Deleting $(SERVER_NAME) and $(CLIENT_NAME) $(RESET)"
-				@rm -f $(SERVER_NAME)
-				@rm -f $(CLIENT_NAME)	
+					@echo "$(NAME): $(CYAN) Deleting $(OBJ_DIR) $(RESET)"
+					@rm -rf $(OBJ_DIR)
+					@echo "$(NAME): $(CYAN) Deleting $(SERVER_NAME) and $(CLIENT_NAME) $(RESET)"
+					@rm -f $(SERVER_NAME)
+					@rm -f $(CLIENT_NAME)	
 
-re :			fclean all
+re :				fclean all
 
-.PHONY : 		all clean fclean re bonus server client
+.PHONY : 			all clean fclean re bonus server client
