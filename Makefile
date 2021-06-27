@@ -6,7 +6,7 @@
 #    By: acami <acami@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/27 20:41:21 by acami             #+#    #+#              #
-#    Updated: 2021/06/27 21:06:16 by acami            ###   ########.fr        #
+#    Updated: 2021/06/27 22:55:29 by acami            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,14 +34,13 @@ BLUE	=	\033[0;34m
 CYAN	=	\033[0;36m
 RESET 	= 	\033[0m
 
+$(NAME) :	 	$(SERVER_NAME)  $(CLIENT_NAME)
 
-$(NAME) :	 	server client
-
-server :		$(OBJ_DIR) $(SERVER_OBJS)
+$(SERVER_NAME) :		$(OBJ_DIR) $(SERVER_OBJS)
 				@echo "$(NAME): $(GREEN) Creating $(SERVER_NAME) $(RESET)"
 				$(CC) $(CFLAGS) $(INCLUDES) $(SERVER_OBJS) -o $(SERVER_NAME)
 
-client :		$(OBJ_DIR) $(CLIENT_OBJS)
+$(CLIENT_NAME)  :		$(OBJ_DIR) $(CLIENT_OBJS)
 				@echo "$(NAME): $(GREEN) Creating $(CLIENT_NAME) $(RESET)"
 				$(CC) $(CFLAGS) $(INCLUDES) $(CLIENT_OBJS) -o $(CLIENT_NAME)
 
