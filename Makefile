@@ -6,13 +6,13 @@
 #    By: acami <acami@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/27 20:41:21 by acami             #+#    #+#              #
-#    Updated: 2021/06/27 23:03:07 by acami            ###   ########.fr        #
+#    Updated: 2021/06/28 17:13:08 by acami            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		= minitalk
-SERVER_NAME	= server
-CLIENT_NAME	= client
+SERVER_NAME	= ./srcs/../server
+CLIENT_NAME	= ./srcs/../client
 
 
 SRC_DIR		=	./srcs/
@@ -40,6 +40,8 @@ RESET 	= 	\033[0m
 
 $(NAME) :	 		$(SERVER_NAME)  $(CLIENT_NAME)
 
+all : 				$(NAME)
+
 $(SERVER_NAME) :	$(OBJ_DIR) $(SERVER_OBJS)
 					@echo "$(NAME): $(GREEN) Creating $(SERVER_NAME) $(RESET)"
 					$(CC) $(CFLAGS) $(INCLUDES) $(SERVER_OBJS) -o $(SERVER_NAME)
@@ -48,7 +50,6 @@ $(CLIENT_NAME) :	$(OBJ_DIR) $(CLIENT_OBJS)
 					@echo "$(NAME): $(GREEN) Creating $(CLIENT_NAME) $(RESET)"
 					$(CC) $(CFLAGS) $(INCLUDES) $(CLIENT_OBJS) -o $(CLIENT_NAME)
 
-all : 				$(NAME)
 
 bonus:				all
 
