@@ -6,7 +6,7 @@
 /*   By: acami <acami@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 00:17:58 by acami             #+#    #+#             */
-/*   Updated: 2021/06/27 22:18:09 by acami            ###   ########.fr       */
+/*   Updated: 2021/06/28 14:59:14 by acami            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,7 @@ static void	recieveBit(int signal, siginfo_t *info, void *context)
 	else
 		bit = 1;
 	g_message.str[g_message.str_pos] |= (bit << (7 - g_message.bit_pos));
-	++(g_message.bit_pos);
-	if (g_message.bit_pos == 8)
+	if (++(g_message.bit_pos) == 8)
 	{
 		if (g_message.str[g_message.str_pos] == '\0')
 		{
@@ -69,6 +68,7 @@ static void	recieveBit(int signal, siginfo_t *info, void *context)
 		if (g_message.str_pos == BUFF_SIZE)
 			printMessage();
 	}
+	usleep(20);
 	kill(info->si_pid, SIGUSR1);
 }
 

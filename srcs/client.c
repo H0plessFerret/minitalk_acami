@@ -6,7 +6,7 @@
 /*   By: acami <acami@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 00:33:19 by acami             #+#    #+#             */
-/*   Updated: 2021/06/27 22:08:45 by acami            ###   ########.fr       */
+/*   Updated: 2021/06/28 14:57:27 by acami            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	sendBit(int signal, siginfo_t *info, void *context)
 		exit (EXIT_SUCCESS);
 	}
 	bit = ((g_message.str[g_message.str_pos]) >> (7 - g_message.bit_pos)) & 1L;
+	usleep(20);
 	if (bit == 0)
 		kill(info->si_pid, SIGUSR1);
 	else
