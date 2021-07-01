@@ -6,7 +6,7 @@
 /*   By: acami <acami@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 12:59:23 by acami             #+#    #+#             */
-/*   Updated: 2021/06/27 21:51:30 by acami            ###   ########.fr       */
+/*   Updated: 2021/07/01 13:49:02 by acami            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <stdbool.h>
 # include <stdlib.h>
 # define BUFF_SIZE 1024
+# define USLEEP_TIME 40
 
 typedef struct s_message	t_message;
 

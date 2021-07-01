@@ -6,7 +6,7 @@
 /*   By: acami <acami@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 00:17:58 by acami             #+#    #+#             */
-/*   Updated: 2021/06/30 16:00:22 by acami            ###   ########.fr       */
+/*   Updated: 2021/07/01 13:49:13 by acami            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void	recieveBit(int signal, siginfo_t *info, void *context)
 		if (g_message.str_pos == BUFF_SIZE)
 			printMessage();
 	}
-	usleep(30);
+	usleep(USLEEP_TIME);
 	kill(info->si_pid, SIGUSR1);
 }
 
